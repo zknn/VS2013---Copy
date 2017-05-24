@@ -34,6 +34,12 @@ class FileCompress
 {
 	typedef HuffmanTreeNode<CharInfo> Node;
 public:
+	//建立一个内部类，保存节点信息
+	struct _HuffmanCharInfo
+	{
+		char _ch;
+		LongType _count;
+	};
 	FileCompress()
 	{
 		for (size_t i = 0; i < 256; ++i)
@@ -48,12 +54,15 @@ public:
 		 FILE* fout = fopen(filename, "r");
 		 assert(fout);
 		 //统计字符出现的次数
+		 int chcount1=0;
 		 char ch = fgetc(fout);
 		 while (ch != EOF)
 		 {
 			 _infos[(unsigned char)ch]._count++;
 			 ch = fgetc(fout);
+			 chcount1++;
 		 }
+		 cout << "原文件共有字符数为：" << chcount1 << endl;
 		 //构建哈夫曼树
 		 CharInfo invalid;
 		 invalid._count = 0;
@@ -61,15 +70,29 @@ public:
 		 //哈夫曼编码
 		 string code;
 		 GenerateHuffman(tree.GetRoot(),code);
-		 //压缩
-		
-		 
+		 //写入字符信息
 		 string compressfile = filename;
 		 compressfile += ".Huffman";
-		 FILE* fin = fopen(compressfile.c_str(), "w");
+		 FILE* fin = fopen(compressfile.c_str(), "wb");
+		 for (size_t i = 0; i < 256; ++i)
+		 {
+			 if (_infos[i]._count)
+			 {
+				 _HuffmanCharInfo info;
+				 info._ch = _infos[i]._ch;
+				 info._count = _infos[i]._count;
+				 fwrite(&info, sizeof(_HuffmanCharInfo), 1, fin);
+			 }
+		 }
+		 _HuffmanCharInfo info;
+		 info._count = -1;
+		 fwrite(&info, sizeof(_HuffmanCharInfo), 1, fin);
+		 //压缩
+
 		 char value = 0;
 		 int count = 1;
 		 fseek(fout, 0, SEEK_SET);
+		 int chcount = 0;
 		 ch = fgetc(fout);
 		 while (ch != EOF)
 		 {
@@ -94,7 +117,9 @@ public:
 				 }
 			 }
 			 ch = fgetc(fout);
+			 chcount++;
 		 }
+		 cout << "压缩字符数为：" << chcount << endl;
 		 if (count != 1)
 		 {
 			 value <<= (9 - count);
@@ -154,9 +179,27 @@ public:
 		 assert(pos != string::npos);
 		 uncompressfile = uncompressfile.substr(0, pos);
 		 uncompressfile += ".unhuffman";
-		 FILE* fin = fopen(uncompressfile.c_str(), "w");
+		 FILE* fin = fopen(uncompressfile.c_str(), "wb");
 		 assert(fin);
-
+		 FILE* fout = fopen(filename, "rb");
+		// 读取字符信息
+		 int p;
+		 while (1)
+		 {
+			 _HuffmanCharInfo info;
+			 size_t size = fread(&info, sizeof(_HuffmanCharInfo), 1, fout);
+			 p = size;
+			 assert(size=sizeof(_HuffmanCharInfo));
+			 if (info._count>0)
+			 {
+				 _infos[(unsigned char)info._ch]._ch = info._ch;
+				 _infos[(unsigned char)info._ch]._count = info._count;
+			 }
+			 else
+			 {
+				 break;
+			 }
+		 } 
 		 //重建哈夫曼树
 		 CharInfo invalid;
 		invalid._count = 0;
@@ -165,9 +208,9 @@ public:
 		 LongType charcount = root->_w._count;
 		 Node* cur = root;
 		// 解压缩
-		 FILE* fout = fopen(filename, "r");
+		 int chcount = 0;
 		 char value = fgetc(fout);
-		 while (value != EOF)
+		 while (value !=feof(fout))
 		 {
 			 for (int pos = 7; pos >= 0; --pos)
 			 {
@@ -190,7 +233,9 @@ public:
 				 }
 			 }
 			 value = fgetc(fout);
+			 chcount++;
 		 }
+		 cout << "解压字符数为："<<chcount << endl;
 		 fclose(fout);
 		 fclose(fin);
 	 }
@@ -202,7 +247,11 @@ void test()
 {
 	FileCompress fc;
 	fc.Compress("Input.txt");
+	//fc.Uncompress("Input.txt.Huffman");
+}
+void testUnCompress()
+{
+	FileCompress fc;
 	fc.Uncompress("Input.txt.Huffman");
 }
-
 
