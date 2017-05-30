@@ -99,29 +99,45 @@
 			  Node* del = cur;
 			  if (cur->_left == NULL)
 			  {
-				  if (cur == parent->_left)
+				  if (cur == _root)
 				  {
-
-					  parent->_left = cur->_right;
+					  _root = cur->_right;
 				  }
 				  else
 				  {
-					  parent->_right = cur->_right;
+					  if (cur == parent->_left)
+					  {
 
+						  parent->_left = cur->_right;
+					  }
+					  else
+					  {
+						  parent->_right = cur->_right;
+
+					  }
 				  }
+				 
 			  }
 			  else if (cur->_right == NULL)
 			  {
-				  if (cur == parent->_left)
+				  if (parent == NULL)
 				  {
-
-					  parent->_left = cur->_left;
+					  _root = cur->_left;
 				  }
 				  else
 				  {
-					  parent->_right = cur->_left;
+					  if (cur == parent->_left)
+					  {
 
+						  parent->_left = cur->_left;
+					  }
+					  else
+					  {
+						  parent->_right = cur->_left;
+
+					  }
 				  }
+				  
 			  }
 			  else
 			  {
@@ -163,6 +179,113 @@
 	  _InOrder(root->_right);
 
   }
+  //递归实现
+  bool InsertR(const K& key)
+  {
+	  return _InsertR(_root, key);
+  }
+  bool _InsertR(Node* root, const K& key)
+  {
+	  if (root == NULL)
+	  {
+		  root = new Node(key);
+		  return true;
+	  }
+	  if (root->_key < key)
+	  {
+		  return _Insert(root->_right, key);
+	  }
+	  else if (root->_key>key)
+	  {
+		  return _Insert(root->_left, key);
+	  }
+	  else
+	  {
+		  return false;
+	  }
+  }
+  Node* FindR(const K& key)
+  {
+	  if (root == NULL)
+		  return NULL;
+	  if (root->_key > key)
+	  {
+		  return _FindR(root->_left);
+	  }
+	  else if (root->_key < key)
+	  {
+		  return _FindR(root->_right);
+	  }
+	  else
+	  {
+		  return root;
+	  }
+  }
+  bool RemoveR(const K& key)
+  {
+	  return _RemoveR(_root, key);
+  }
+  bool _Remove(Node* root, const K& key)
+  {
+	  if (root == NULL)
+		  return false;
+	  if (root->_key > key)
+	  {
+		  return _Remove(root->_left, key);
+	  }
+	  else if (root->_key < key)
+	  {
+		  return _Remove(root->_right, key);
+	  }
+	  else
+	  {
+		  Node* del = root;
+		  if (root->_left == NULL)
+		  {
+			  root = root->_right;
+		  }
+		  else if (root->_right == NULL)
+		  {
+			  root = root->_left;
+		  }
+		  else
+		  {
+			  //法一
+			  /*  Node* parent = NULL;
+				Node* left = root->_right;
+				while (left->_left)
+				{
+				parent = left;
+				left = left->_left;
+				}
+				root->_key = left->_key;
+				del = left;
+				if (parent->_left == left)
+				{
+				parent->_left = left->_right;
+				}
+				else
+				{
+				parent->_right = left->_right;
+				}
+				}
+				delete del;*/
+			  //方法二
+			  Node* left = left->_right;
+			  while (left->_left)
+			  {
+				  left = left->_left;
+			  }
+			  root->_key = left->_key;
+			  _Remove(root->_right, left->_key);
+		  }
+		  if (root->_left == NULL)
+		  {
+			  delete del;
+			  return true;
+		  }
+	  }
+  }
 	protected:
 		Node* _root;
  };
@@ -177,8 +300,41 @@
 	 }
 	 t.InOrder();
 	 t.Remove(0);
-	 t.Remove(2);
+	 t.Remove(1);
 	 t.InOrder();
+	 t.Remove(2);
+	 t.Remove(3);
 	 t.Remove(4);
+	 t.InOrder();
+	 t.Remove(5);
+	 t.Remove(6);
+	 t.Remove(7);
+	 t.Remove(8);
+	 t.Remove(9);
+	 t.Remove(4);
+
 	 
+ }
+ void testR()
+ {
+	 SearchBinaryTree<int> t;
+	 int a[] = { 5, 3, 4, 1, 7, 8, 2, 0, 6, 9 };
+	 for (size_t i = 0; i < sizeof(a) / sizeof(a[0]); ++i)
+	 {
+		 t.Inserch(a[i]);
+	 }
+	 t.InOrder();
+	 t.Remove(0);
+	 t.Remove(1);
+	 t.InOrder();
+	 t.Remove(2);
+	 t.Remove(3);
+	 t.Remove(4);
+	 t.InOrder();
+	 t.Remove(5);
+	 t.Remove(6);
+	 t.Remove(7);
+	 t.Remove(8);
+	 t.Remove(9);
+	 t.Remove(4);
  }
