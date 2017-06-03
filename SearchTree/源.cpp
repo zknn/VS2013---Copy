@@ -2,11 +2,17 @@
 #include <iostream>
 using namespace std;
 
-#include "SearchTree.h"
+//#include "SearchTree.h"
+#include <algorithm>
+#include <vector>
+#include <string>
+#include "Top.h"
 
 int main()
 {
-	testR();
+	vector<string> strs = { "apple", "apple","apple","water" };
+	TopK(strs,4);
+	//testR();
 	return 0;
 
 }
