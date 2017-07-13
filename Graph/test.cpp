@@ -5,11 +5,15 @@ using namespace std;
 #include <string>
 #include <map>
 #include <vector>
-#include "GraphLinkTable.h"
-//#include "GraphMartix.h"
+#include <queue>
+//#include "GraphLinkTable.h"
+#include "GraphMartix.h"
+#include "UnionFindSet.h"
 
 int main()
 {
-	testGraphLinkTable();
+	//test();
+	//testGraphLinkTable();
+	testGrraphMartix();
 	return 0;
 }
