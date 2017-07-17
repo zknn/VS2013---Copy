@@ -14,7 +14,7 @@ struct Node
 };
 
 
-//1.ÅÐ¶ÏÁ´±íÊÇ·ñ´ø»·£¬Èô´ø»·Çó»·³¤¶È£¬Èë¿Úµã
+//1.åˆ¤æ–­é“¾è¡¨æ˜¯å¦å¸¦çŽ¯ï¼Œè‹¥å¸¦çŽ¯æ±‚çŽ¯é•¿åº¦ï¼Œå…¥å£ç‚¹
 class List
 {
 public:
@@ -53,7 +53,7 @@ public:
 		}
 		return NULL;
 	}
-	Node* IsCycle()   //ÅÐ¶ÏÊÇ·ñ´ø»·£¬fastÊ¼ÖÕ±Èslow¿ì2¸ö  
+	Node* IsCycle()   //åˆ¤æ–­æ˜¯å¦å¸¦çŽ¯ï¼Œfastå§‹ç»ˆæ¯”slowå¿«2ä¸ª  
 	{
 		Node* fast = _root;
 		Node* slow = _root;
@@ -72,16 +72,16 @@ public:
 		}
 		return NULL;
 	}
-	int GetEntry(Node* meet)
+        Node* GetEntry(Node* meet)
 	{
-		Node* cur = meet;
-		int count = 0;
-		do
+		Node* cur = _root;
+		Node* meetnode=meet;
+		while (cur != meetnode)
 		{
-			count++;
 			cur = cur->_next;
-		} while (cur != meet);
-		return count;
+			meetnode = meetnode->_next;
+		}
+		return cur;
 	}
 	int GetCycleLength(Node* meet)
 	{
@@ -109,8 +109,8 @@ protected:
 };
 
 
-//2.²»ÄÜ¼Ì³ÐµÄÀà
-//½«¹¹Ôì·½·¨ºÍÎö¹¹Éè¼ÆÎªË½ÓÐ,Ê¹ÓÃ¾²Ì¬·½·¨Ê¹Ëü¿ÉÒÔÊµÀý»¯
+//2.ä¸èƒ½ç»§æ‰¿çš„ç±»
+//å°†æž„é€ æ–¹æ³•å’Œæžæž„è®¾è®¡ä¸ºç§æœ‰,ä½¿ç”¨é™æ€æ–¹æ³•ä½¿å®ƒå¯ä»¥å®žä¾‹åŒ–
 class A
 {
 public:
@@ -135,8 +135,8 @@ private:
 
 };
 
-//3.Éè¼ÆÒ»¸öÀàÖ»ÄÜÔÚ¶ÑÉÏ´´½¨¶ÔÏó
-//½«ÀàµÄ¹¹Ôìº¯ÊýÉùÃ÷ÎªË½ÓÐ£¬Ê¹ÓÃ¾²Ì¬·½·¨´´½¨¶ÔÏóºÍÊÍ·Å¶ÔÏó
+//3.è®¾è®¡ä¸€ä¸ªç±»åªèƒ½åœ¨å †ä¸Šåˆ›å»ºå¯¹è±¡
+//å°†ç±»çš„æž„é€ å‡½æ•°å£°æ˜Žä¸ºç§æœ‰ï¼Œä½¿ç”¨é™æ€æ–¹æ³•åˆ›å»ºå¯¹è±¡å’Œé‡Šæ”¾å¯¹è±¡
 class A
 {
 public:
@@ -161,8 +161,8 @@ private:
 
 };
 
-//4.´´½¨Ò»¸öÀàÖ»ÄÜÔÚÕ»ÉÏ´´½¨¶ÔÏó
-//²»ÄÜÔÚ¶ÑÉÏ´´½¨£¬¼´²»ÄÜÔÚÀàÍâµ÷ÓÃnew·½·¨£¬ËùÒÔ½«new·½·¨ÖØÔØÎªË½ÓÐ
+//4.åˆ›å»ºä¸€ä¸ªç±»åªèƒ½åœ¨æ ˆä¸Šåˆ›å»ºå¯¹è±¡
+//ä¸èƒ½åœ¨å †ä¸Šåˆ›å»ºï¼Œå³ä¸èƒ½åœ¨ç±»å¤–è°ƒç”¨newæ–¹æ³•ï¼Œæ‰€ä»¥å°†newæ–¹æ³•é‡è½½ä¸ºç§æœ‰
 class A
 {
 public:
