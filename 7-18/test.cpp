@@ -14,22 +14,20 @@ public:
 	}
 	void Pop()
 	{
-		if (!s2.empty())
+		if (s1.empty() == true && s2.empty() == true)
 		{
-			s2.pop();
+			cout << "µ±Ç°Õ»Îª¿Õ" << " ";
+			return ;
 		}
-		else
+		if (s2.empty() == true)
 		{
-			if (!s1.empty())
+			while (s1.empty() == false)
 			{
 				s2.push(s1.top());
 				s1.pop();
 			}
-			else
-			{
-				return;
-			}
 		}
+		cout << "É¾³ý" << s2.top() << endl;
 		s2.pop();
 	}
 protected:
@@ -174,6 +172,6 @@ int main()
 	change(arr, length);
 	cout << arr << endl;
 	testQueue();
-	testStack();
+//	testStack();
 	return 0;
 }
