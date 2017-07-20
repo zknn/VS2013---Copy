@@ -16,7 +16,7 @@ public:
 	{
 		if (s1.empty() == true && s2.empty() == true)
 		{
-			cout << "当前栈为空" << " ";
+			cout << "当前队列为空" << " ";
 			return ;
 		}
 		if (s2.empty() == true)
