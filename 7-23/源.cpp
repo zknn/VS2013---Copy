@@ -85,45 +85,88 @@ void testBinaryTree()
 
 //定义链表节点
 
-struct Node{
+typedef struct Node{
 	int data;
     Node *next;
-};
+	Node(int d)
+		:data(d)
+		, next(NULL)
+	{}
+}*pList;
 
-//函数在给定头结点和尾节点的情况下，对整个链表做翻转
-
-void ReverseLinkList(Node *head, Node *end)
+void InitList(pList* pplist) //初始化链表
 {
-    if (head == NULL || end == NULL) return;
-	Node *pre = NULL, *cur = head, *stop = end->next;
-	while (cur != stop)
+	assert(pplist != NULL);
+	*pplist = NULL;
+}
+void PushBack(pList* pplist, int data)
+{
+	assert(pplist != NULL);
+		Node* newnode = new Node(data);
+		if (*pplist == NULL)
+		{
+			*pplist = newnode;
+		}
+		else
+		{
+			Node* cur = *pplist;
+			while (cur->next)
+			{
+				cur = cur->next;
+			}
+			cur->next = newnode;
+		}
+}
+void PrintList(pList plist)
+{
+	if (plist == NULL)
 	{
-		Node* nxt = cur->next;
-		cur->next = pre;
-		pre = cur;
-		cur = nxt;
+		cout << "当前链表为空" << endl;
+		return;
+	}
+	Node* cur = plist;
+	while (cur)
+	{
+		cout << cur->data << " ";
+		cur = cur->next;
+	}
+	cout << endl;
+}
+
+void Reverse(Node* head, Node* tail)
+{
+	if (head == NULL || tail == NULL)
+		return;
+	Node* prev = NULL;
+	Node* cur = head;
+	Node* stop = tail->next;
+
+	while (cur!=stop)  //翻转
+	{
+		Node* next = cur->next;
+		cur->next = prev;
+		prev = cur;
+		cur = next;
 	}
 }
 
-//k链表翻转
-
-Node* ReverseKLinkList(Node *head, int k)
+Node* ReverseK(Node* head, int k)  //当链表长度小于
 {
-	if (head == NULL || k <= 0) return NULL;
-	Node *cur = head;
-	for (int i = 0; i<k - 1; i++)
+	if (head == NULL || k <= 0)
+		return NULL;
+	Node* cur = head;
+	for (int i = 0; i < k - 1; i++) //找到第K个节点的位置
 	{
 		cur = cur->next;
 		if (cur == NULL)
 			break;
 	}
-
-	//在链表长度小于k的情形下，直接返回原链表
-
-	if (cur == NULL) return head;
-	Node* begin = cur->next, *end = begin;
-	Node* pre = head;
-	ReverseLinkList(head, cur);
+	if (cur == NULL)
+		return head;
+	Node* begin = cur->next;
+	Node* end = begin;
+	Node* prev = head;
+	Reverse(head, cur);   //翻转第一个节点到第K个节点
 	while (begin != NULL)
 	{
 		for (int i = 0; i < k - 1; i++)
@@ -134,50 +177,42 @@ Node* ReverseKLinkList(Node *head, int k)
 		}
 		if (end == NULL)
 		{
-			pre->next = begin;
+			prev->next = begin;
 			break;
 		}
 		else
 		{
-			Node *nextbegin = end->next;
-			ReverseLinkList(begin, end);
-			pre->next = end;
-			pre = begin;
+			Node* nextbegin = end->next;
+			Reverse(begin, end);
+			prev->next = end;
+			prev = begin;
 			begin = end = nextbegin;
 		}
 	}
 	return cur;
 }
-
-int testList()
+void test()
 {
-	int a[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-	Node* node[12];
-	for (int i = 0; i<12; i++)
+	pList plist;
+	InitList(&plist);
+	int a[] = { 1, 2, 3, 4, 5};
+	for (int i = 0; i < sizeof(a) / sizeof(a[0]);i++)
 	{
-		node[i] = new Node;
-		node[i]->next = NULL;
-		node[i]->data = a[i];
+		PushBack(&plist, a[i]);
 	}
-	for (int i = 0; i<11; i++)
-	{
-		node[i]->next = node[i + 1];
-	}
+	PrintList(plist);
+	Node* head = plist;
 	int k = 0;
 	cout << "请输入K值：";
 	cin >> k;
-	Node *tmp = ReverseKLinkList(node[0], k);
-    for (; tmp != NULL; tmp = tmp->next)
-	{
-		cout << tmp->data <<" ";
-	}
-	cout << endl;
-	return 0;
+	Node* cur=ReverseK(head, k);
+	PrintList(cur);
 }
+
 
 int main()
 {
 	//testBinaryTree();
-	testList();
+	test();
 	return 0;
 }
