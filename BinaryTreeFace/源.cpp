@@ -119,8 +119,11 @@ public:
 			return NULL;
 		if (root->_data == data)
 			return root;
-		return _Find(root->_left, data);
+		Node* ret=_Find(root->_left, data);
+		if (ret)
+			return ret;
 		return _Find(root->_right, data);
+	
 	}
 	//²ãĞò±éÀú¶ş²æÊ÷
 	void BFS()  //½èÖú¶ÓÁĞ
@@ -349,8 +352,14 @@ void testFind()  //²âÊÔ²éÕÒº¯Êı
 	int arr[] = { 1, 2, 3, '#', '#', 4, '#', '#', 5, 6, '#', '#', 7 };
 	int size = sizeof(arr) / sizeof(arr[0]);
 	BinaryTree tree(arr, size, '#');
+	tree.Find(1);
+	tree.Find(2);
 	tree.Find(3);
-	tree.Find(0);
+	tree.Find(4);
+	tree.Find(5);
+	tree.Find(6);
+	tree.Find(7);
+
 
 }
 void testBFS()  //²âÊÔ²ãĞò±éÀú
@@ -457,7 +466,7 @@ int main()
 	//testleafCount();
 	//testKCount();
 	//testheight();
-	//testFind();
+	testFind();
 	//testBFS();
 	//testIsBalance();
 	//testPrevOrder();
@@ -466,6 +475,6 @@ int main()
 	//testPrevOrderNR();
 	//testInOrderNR();
 	//testPostOrderNR();
-	testMirror();
+	//testMirror();
 	return 0;
 }
