@@ -250,7 +250,8 @@ public:
 	{
 		if (_root == NULL)
 			return NULL;
-		Node* cur=_GetCommonAncersor(_root, x1, x2);
+		Node* cur = _GetCommonAncersor(_root, x1, x2); 
+
 	}
 	
 	Node* _GetCommonAncersor(Node* root, Node* x1, Node* x2)
@@ -281,8 +282,8 @@ void testSearch()
 		tree.Insert(arr[i]);
 	}
 	tree.PrevOrder();
-	BinaryNode* node1 = new BinaryNode(6);
-	BinaryNode* node2 = new BinaryNode(7);
+	BinaryNode* node1 = new BinaryNode(0);
+	BinaryNode* node2 = new BinaryNode(2);
 	BinaryNode* node = tree.GetCommonAncersor(node1, node2);
 	if (node == NULL)
 		cout << "没有公共祖先" << endl;
@@ -352,6 +353,8 @@ public:
 			return NULL;
 		list<Node*> l1;
 		list<Node*> l2;
+		l1.push_front(x1);
+		l2.push_front(x2);
 		Node* parent1 = x1->_parent;
 		while (parent1)
 		{
@@ -408,8 +411,8 @@ void testBinary()
 	int arr[] = { 1, 2, 3, '#', '#', 4, '#', '#', 5, 6, '#', '#', 7 };
 	int size = sizeof(arr) / sizeof(arr[0]);
 	Binary tree(arr, size, '#');
-	Node* node1 = tree.Find(3);
-	Node* node2 = tree.Find(4);
+	Node* node1 = tree.Find(1);
+	Node* node2 = tree.Find(2);
 	Node* node=tree.GetAncersor(node1, node2);
 	if (node != NULL)
 		cout << "公共祖先是： " << node->_data << endl;
