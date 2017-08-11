@@ -26,16 +26,16 @@ private:
 };
 
 //日期类
-class whatdata
+class whatdate
 {
 public:
-	whatdata();//构造函数
+	whatdate();//构造函数
 	int IsLeapYear(int year);
 	long YearDays(int year);
 	long TotalDays(int year, int month, int day);
 	int GetLunar(int Y1, int M1, int D1, int &Y2, int &M2, int &D2);
 	char inter_face();//首页
-	void serach_data();//日历查询
+	void search_date();//日历查询
 	void book_manage();//备忘录管理
 	void select_day();//万年历之日历查询
 	void select_month();//万年历之月历查询
